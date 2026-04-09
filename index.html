@@ -7,10 +7,29 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <div class="main-container">
+    <div class="main-container" id="fontContent">
         <h1>Random Image Generator</h1>
         <img src="" alt="" id="random-img">
         <button onclick="generateImage()" id="changeBtn">Change</button>
+
+        <label>Enter Image ID</label>
+        <input type="number" placeholder="Enter any number" id="imageNumber" oninput="generateImage()">
+
+
+        <div class="btn-group" style="display: flex; gap: 10px;">
+            <button onclick="changeStyle('sans')">Sans</button>
+            <button onclick="changeStyle('serif')">Serif</button>
+            <button onclick="changeStyle('monospace')">Mono</button>
+            <button onclick="changeStyle('Arial')">Arial</button>
+            <button onclick="changeStyle('Courier New')">Courier New</button>
+        </div>
+
+        <div class="font-btns" style="display: flex; gap: 10px;">
+            <button onclick="changeSize(2)">font size +</button>
+            <button onclick="changeSize(-2)">font size -</button>
+        </div>
+
+        <p id="textSize" style="color: white; margin-top: 10px;"></p>
     </div>
 
     <script>
@@ -18,14 +37,39 @@
             const colors = ['red', 'green', 'purple', '#a52a2a', 'gray', '#00FF00', '#0000FF', '#b8e6bf'];
 
             const randomImg = document.getElementById('random-img');
+            const imageNumber = document.getElementById('imageNumber').value;
+
             const changeButton = document.getElementById('changeBtn');
 
-            randomImg.src = `https://picsum.photos/600?random=${Math.random()}`;   
+            if (imageNumber != 0){
+                randomImg.src = `https://picsum.photos/id/${imageNumber}/400`;
+            } else{
+                randomImg.src = `https://picsum.photos/400?random=${Math.random()}`;
+            }   
 
             let randomBtnColor = Math.round(Math.random() * colors.length);
             let btnColorChange = colors[randomBtnColor];
             changeButton.style.backgroundColor = btnColorChange;
 
+        }
+
+        function changeStyle(font){
+            document.getElementById('fontContent').style.fontFamily = font;
+        }
+
+        let currentSize = 22;
+        document.getElementById('fontContent').style.fontSize = currentSize + "px";
+        document.getElementById('textSize').innerText = "current size is:" + currentSize + "px";
+
+
+        function changeSize(size){
+            currentSize += size;
+
+            currentSize = Math.max(currentSize, 14);
+            currentSize = Math.min(currentSize, 40);
+
+            document.getElementById('fontContent').style.fontSize = currentSize + "px";
+            document.getElementById('textSize').innerText = "current size is:" + currentSize + "px";
         }
 
         generateImage();
